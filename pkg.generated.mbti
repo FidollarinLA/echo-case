@@ -1,0 +1,37 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "fidollarinla/echo_case"
+
+// Values
+pub fn can_accuse(Int, Int, Int, Int) -> Int
+
+pub fn case_solution() -> String
+
+pub fn case_summary() -> String
+
+pub fn clue_detail(Int) -> String
+
+pub fn clue_short(Int) -> String
+
+pub fn clue_title(Int) -> String
+
+pub fn score_accusation(Int, Int, Int, Int) -> Int
+
+pub fn scripted_reply(String, String, Int, Int, Int) -> String
+
+pub fn suspect_ai_context(Int, Int, Int, Int) -> String
+
+pub fn suspect_intro(Int) -> String
+
+pub fn suspect_mark(Int) -> String
+
+pub fn suspect_name(Int) -> String
+
+pub fn suspect_role(Int) -> String
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
