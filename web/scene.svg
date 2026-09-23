@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">北塔信号室的夜景</title>
+  <desc id="desc">一间深夜的观测站控制室，窗外是星空，控制台上闪烁着青色与琥珀色的信号灯。</desc>
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#10192a"/><stop offset="1" stop-color="#263b50"/></linearGradient>
+    <linearGradient id="glass" x2="0" y2="1"><stop stop-color="#193748" stop-opacity=".35"/><stop offset="1" stop-color="#101923" stop-opacity=".88"/></linearGradient>
+    <linearGradient id="floor" x2="0" y2="1"><stop stop-color="#29323a"/><stop offset="1" stop-color="#121820"/></linearGradient>
+    <linearGradient id="screen" x2="1" y2="1"><stop stop-color="#123c47"/><stop offset="1" stop-color="#0b202a"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="10" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1200" height="720" fill="#151d26"/>
+  <path d="M0 0h1200v480H0z" fill="url(#sky)"/>
+  <g fill="#dce8e4" opacity=".75">
+    <circle cx="88" cy="83" r="2"/><circle cx="191" cy="142" r="1.5"/><circle cx="275" cy="71" r="2"/><circle cx="393" cy="118" r="1.5"/><circle cx="500" cy="52" r="1.7"/>
+    <circle cx="716" cy="91" r="2"/><circle cx="829" cy="65" r="1.3"/><circle cx="1018" cy="114" r="2"/><circle cx="1112" cy="71" r="1.5"/><circle cx="1060" cy="203" r="1.7"/>
+  </g>
+  <path d="M0 287 146 224l115 48 154-103 159 69 118-92 128 85 165-109 215 135v134H0z" fill="#273946" opacity=".6"/>
+  <path d="M0 360 148 293l103 49 187-107 143 77 153-112 105 80 194-122 167 111v126H0z" fill="#1d2e3a" opacity=".86"/>
+  <path d="M85 49h1030v439H85z" fill="url(#glass)" stroke="#6b7c83" stroke-width="10"/>
+  <path d="M424 51v437M776 51v437M87 283h1026" fill="none" stroke="#7e8c8f" stroke-width="7" opacity=".52"/>
+  <path d="M0 489h1200v231H0z" fill="url(#floor)"/>
+  <path d="M0 509c222 53 354 44 554 19 270-33 452 9 646-25v115H0z" fill="#343d43" opacity=".6"/>
+  <path d="M96 523 330 476h573l202 47-171 81H235z" fill="#111a20" stroke="#56636a" stroke-width="7"/>
+  <path d="m330 477 82-87h371l121 87z" fill="#242f38" stroke="#68747a" stroke-width="6"/>
+  <path d="m402 457 31-48h105v48zM556 457l17-48h92v48zM696 457l9-48h96l38 48z" fill="url(#screen)" stroke="#67767a" stroke-width="4"/>
+  <g fill="none" stroke="#57d3c0" stroke-width="4" opacity=".9">
+    <path d="M418 434h24l9-12 12 20 13-14h47"/><path d="M577 439h21l10-21 10 21h32"/><path d="M718 439h23l8-18 9 18h36"/>
+  </g>
+  <g filter="url(#glow)"><circle cx="872" cy="441" r="6" fill="#f4bf72"/><circle cx="887" cy="441" r="6" fill="#57d3c0"/><circle cx="902" cy="441" r="6" fill="#f4bf72"/></g>
+  <path d="M304 578h596l-47 32H360z" fill="#9b754b" opacity=".72"/>
+  <path d="M478 611h34v86h-34zM748 611h34v86h-34z" fill="#182129"/>
+  <path d="M70 532c48-77 75-108 124-122 25-7 49 3 58 27l28 78-30 55H70z" fill="#161b23"/>
+  <path d="M166 399c9-38 39-65 78-66 31 0 54 20 58 49l-9 31-83 2z" fill="#c78f6c"/>
+  <path d="M163 402c5-48 37-80 80-78 34 2 56 24 59 61l-20-21-12 5-12-17-33 22-35 2-20 29z" fill="#cb744a"/>
+  <path d="M1030 546c25-66 48-89 82-92 40-4 75 30 82 94v11h-164z" fill="#1b222b"/>
+  <path d="M1069 458c4-34 26-54 54-54 30 1 50 22 52 57l-8 18-80-1z" fill="#d4ad91"/>
+  <path d="M1066 461c6-40 27-61 58-59 27 2 46 20 50 53l-19-10-11 4-14-12-28 16-28 1z" fill="#313e4a"/>
+  <g fill="#f3c573" filter="url(#glow)"><circle cx="240" cy="339" r="3"/><circle cx="232" cy="337" r="2"/></g>
+  <text x="600" y="681" text-anchor="middle" fill="#d9e4df" font-family="sans-serif" font-size="15" letter-spacing="4" opacity=".55">NORTH TOWER / 21:07:14 / NIGHT SHIFT</text>
+</svg>

@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101916" />
+    <meta name="description" content="一款以图像、声音与角色对话推进的开源 AI 推理游戏。" />
+    <title>回声档案 · EchoCase</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="EchoCase 首页"><span class="brand-mark"><i></i><i></i><i></i></span><span>ECH<span class="brand-accent">O</span>CASE</span></a>
+        <div class="top-meta"><span class="live-dot"></span> 单人试玩 · 无需账号</div>
+        <button class="quiet-button" id="restart-button" type="button"><span>↻</span> 重新开始</button>
+      </header>
+
+      <main id="top">
+        <section class="case-heading">
+          <div class="eyebrow"><span class="eyebrow-line"></span> NORTH TOWER / CASE 01</div>
+          <div class="heading-row">
+            <div>
+              <h1>最后一段回声</h1>
+              <p class="lede">信号没有消失。有人把它藏进了另一条路。</p>
+            </div>
+            <div class="case-stamp"><span>档案状态</span><strong><i></i> 调查中</strong><small>2026.09.18 / 21:07</small></div>
+          </div>
+        </section>
+
+        <section class="workspace" aria-label="案件调查工作台">
+          <div class="main-column">
+            <article class="scene-card panel">
+              <div class="scene-image-wrap">
+                <img class="scene-image" src="/scene.svg" alt="北塔信号室夜班现场：两位值班人员在观测窗前，控制台亮着青色信号灯。" />
+                <div class="scene-vignette"></div>
+                <div class="scene-topline"><span><span class="rec-dot"></span> 现场记录 / 03:42</span><span>北塔观测站 · 控制室</span></div>
+                <button class="hotspot hotspot-a" data-evidence="image" aria-label="检查控制台照片线索"><span>01</span></button>
+                <button class="hotspot hotspot-b" data-evidence="audio" aria-label="播放录音线索"><span>02</span></button>
+                <div class="scene-caption"><span class="caption-index">01 — 现场</span><p>最后一次信号切换，发生在夜班交接前 14 秒。</p></div>
+              </div>
+              <div class="scene-footer"><span><span class="pulse"></span> 现场重建 / 影像线索可交互</span><button class="text-action" id="listen-scene" type="button">听取现场旁白 <span>↗</span></button></div>
+            </article>
+
+            <section class="evidence-section" aria-labelledby="evidence-title">
+              <div class="section-heading"><div><div class="eyebrow small">EVIDENCE BOARD</div><h2 id="evidence-title">已发现的线索 <span id="evidence-count">0 / 3</span></h2></div><span class="section-note">线索之间的矛盾，可能比线索本身更重要。</span></div>
+              <div class="evidence-grid">
+                <button class="evidence-card" data-evidence="audio" type="button" id="evidence-audio">
+                  <span class="evidence-number">A / 01</span><span class="evidence-icon audio-icon"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+                  <span class="evidence-title">走廊录音</span><span class="evidence-summary">点击播放 8 秒现场片段</span><span class="evidence-status">未检查</span>
+                </button>
+                <button class="evidence-card" data-evidence="image" type="button" id="evidence-image">
+                  <span class="evidence-number">V / 02</span><span class="evidence-icon image-icon"><span></span></span>
+                  <span class="evidence-title">控制台照片</span><span class="evidence-summary">检查反光里的路由灯</span><span class="evidence-status">未检查</span>
+                </button>
+                <button class="evidence-card" data-evidence="log" type="button" id="evidence-log">
+                  <span class="evidence-number">D / 03</span><span class="evidence-icon log-icon">↳</span>
+                  <span class="evidence-title">维护日志</span><span class="evidence-summary">读取带时间戳的切换记录</span><span class="evidence-status">未检查</span>
+                </button>
+              </div>
+            </section>
+
+            <section class="suspects-section" aria-labelledby="suspects-title">
+              <div class="section-heading"><div><div class="eyebrow small">PEOPLE ON DUTY</div><h2 id="suspects-title">夜班人员</h2></div><span class="section-note">选中一位，开始询问。</span></div>
+              <div class="suspect-list" id="suspect-list"></div>
+            </section>
+          </div>
+
+          <aside class="right-column">
+            <section class="briefing panel">
+              <div class="panel-label"><span>任务简报</span><span>01 / 03</span></div>
+              <div class="briefing-symbol">⌁</div>
+              <h2>找回信号<br />切换的真相</h2>
+              <p id="case-summary">昨夜，北塔观测站准备发出一组重要数据。21:07:14，信号突然从主线路切走，档案里只留下 8 秒录音、一张控制台照片和一份维护日志。</p>
+              <div class="briefing-divider"></div>
+              <div class="objective"><span class="objective-mark">01</span><span>检查至少两条线索</span></div>
+              <div class="objective"><span class="objective-mark">02</span><span>询问夜班人员，找出矛盾</span></div>
+              <div class="objective"><span class="objective-mark">03</span><span>用证据说明你的判断</span></div>
+              <button class="primary-button" id="accuse-button" type="button" disabled>提交推理 <span>→</span></button>
+              <div class="button-hint" id="accuse-hint">再检查一条线索后即可提交</div>
+            </section>
+
+            <section class="interrogation panel" aria-labelledby="chat-title">
+              <div class="panel-label"><span>对话记录</span><span class="ai-badge"><i></i> AI / SCRIPT</span></div>
+              <div class="chat-person" id="chat-person"></div>
+              <div class="chat-scroll" id="chat-scroll">
+                <div class="chat-welcome"><span class="chat-time">21:08</span><p>你可以直接提问，也可以先检查线索，再拿证据追问。角色只会回应自己知道的事。</p></div>
+              </div>
+              <div class="chat-tools"><button type="button" id="voice-input" title="语音输入">◖</button><label class="upload-button" title="附上现场照片">＋<input type="file" id="image-upload" accept="image/*" /></label><span id="upload-name">附图</span><button type="button" id="speak-toggle" title="朗读回复">♫</button></div>
+              <form class="chat-form" id="chat-form"><input id="chat-input" autocomplete="off" placeholder="输入你的问题…" aria-label="输入要询问的问题" /><button type="submit" aria-label="发送问题">↑</button></form>
+              <div class="chat-footnote" id="chat-footnote">演示模式：固定角色回答，不需要 API 密钥</div>
+            </section>
+
+            <section class="progress-card panel"><div class="panel-label"><span>调查进度</span><span id="progress-label">0%</span></div><div class="progress-track"><span id="progress-bar"></span></div><div class="progress-meta"><span id="progress-detail">现场尚未检查</span><span class="mono">CASE / 01</span></div></section>
+          </aside>
+        </section>
+      </main>
+      <footer class="site-footer"><span>ECHOCASE <span>·</span> 一个可以被解释、测试、复现的 AI 推理游戏。</span><span>POWERED BY <b>MOONBIT</b></span></footer>
+    </div>
+
+    <dialog id="evidence-dialog" class="modal evidence-modal">
+      <button class="modal-close" data-close aria-label="关闭">×</button>
+      <div class="eyebrow small" id="modal-kicker">EVIDENCE / 01</div>
+      <h2 id="modal-title">线索</h2>
+      <div id="modal-content" class="modal-content"></div>
+      <div class="modal-actions"><button class="secondary-button" data-close type="button">返回现场</button><button class="primary-button" id="mark-evidence" type="button">记录线索 <span>✓</span></button></div>
+    </dialog>
+
+    <dialog id="accusation-dialog" class="modal accusation-modal">
+      <button class="modal-close" data-close aria-label="关闭">×</button>
+      <div class="eyebrow small">FINAL DEDUCTION / 03</div>
+      <h2>你认为是谁切换了信号？</h2>
+      <p class="modal-lede">选出一位当事人，再引用你发现的线索。MoonBit 规则核心会按事实与证据评分。</p>
+      <div class="accuse-people" id="accuse-people"></div>
+      <div class="cite-heading">引用证据 <span>至少两条</span></div>
+      <div class="cite-list" id="cite-list"></div>
+      <div class="modal-actions"><button class="secondary-button" data-close type="button">继续调查</button><button class="primary-button" id="submit-accusation" type="button" disabled>锁定推理 <span>→</span></button></div>
+      <div class="button-hint" id="submit-hint">先选择一位当事人和至少两条已发现的线索</div>
+    </dialog>
+
+    <dialog id="result-dialog" class="modal result-modal">
+      <button class="modal-close" data-close aria-label="关闭">×</button>
+      <div class="result-seal" id="result-seal">ECHO / VERIFIED</div>
+      <div class="eyebrow small">CASE CLOSED / 01</div>
+      <h2 id="result-title">信号找回了。</h2>
+      <p id="result-copy" class="result-copy"></p>
+      <div class="result-score"><span>推理得分</span><strong id="result-score">100</strong><small>/ 100</small></div>
+      <div class="result-proof" id="result-proof"></div>
+      <button class="primary-button full-button" data-close type="button">回到档案 <span>✓</span></button>
+    </dialog>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
