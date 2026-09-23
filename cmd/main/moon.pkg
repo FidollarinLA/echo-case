@@ -1,0 +1,5 @@
+import {
+  "fidollarinla/echo_case",
+}
+
+pkgtype(kind: "executable")
