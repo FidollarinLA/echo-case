@@ -1,0 +1,12 @@
+{
+  "name": "echo-case",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "npm run build && node server.mjs",
+    "check": "node scripts/run-moon.mjs check",
+    "test": "npm run build && node scripts/run-moon.mjs test && node --test test/*.test.mjs"
+  }
+}
