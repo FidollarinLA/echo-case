@@ -12,4 +12,4 @@
 
 **原创与开源来源。** 原创项目，非移植项目，不复用已有项目代码或素材；采用 Apache-2.0。已检索的相邻产品包括 [Escaply](https://www.escaply.com/en)、[MysteryEngine](https://mysteryengine.ai/) 和 MoonBit 视觉小说引擎 [Reisen](https://reisen-docs.vercel.app/)；本项目以“证据引用 + MoonBit 确定性事实判定 + 多模态现场调查”形成实现差异，不声称全球范围内不存在相近产品。
 
-**GitHub 仓库。** [github.com/FidollarinLA/echo-case](https://github.com/FidollarinLA/echo-case)。开发记录会通过连续、可追踪的功能提交展示；不以拆分、空提交或重复提交凑数。
+**GitHub 仓库。** [github.com/FidollarinLA/echo-case](https://github.com/FidollarinLA/echo-case)，包含 10 个以上实质有效 commits，按功能持续公开开发记录，不以空提交或重复提交凑数。
