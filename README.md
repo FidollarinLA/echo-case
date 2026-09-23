@@ -52,7 +52,7 @@ node --check web/app.js
 
 完整本地检查可运行 `npm test`；它会编译 MoonBit 规则核心、运行 MoonBit 单元测试，并启动临时本地服务验证试玩页面和脚本对话接口。
 
-MoonBit 实现推理评分、线索门槛和无密钥角色对话；案件文本、证据说明、角色资料与 AI 角色知识边界也集中在 MoonBit。浏览器界面和本地模型适配服务分别使用 HTML/CSS/JavaScript 与 Node.js。`npm start` 会先编译 MoonBit 规则模块，再启动本地服务。
+MoonBit 实现案件状态机（线索收集、进度与提交门槛）、推理评分和无密钥角色对话；案件文本、证据说明、角色资料与 AI 角色知识边界也集中在 MoonBit。浏览器界面和本地模型适配服务分别使用 HTML/CSS/JavaScript 与 Node.js。`npm start` 会先编译 MoonBit 规则模块，再启动本地服务。
 
 ## 比赛方向与项目来源
 

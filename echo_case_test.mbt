@@ -1,23 +1,41 @@
 ///|
 test "complete evidence supports the correct accusation" {
-  assert_eq(score_accusation(1, 1, 1, 1), 100)
+  assert_eq(score_accusation(1, 7), 100)
 }
 
 ///|
 test "a correct accusation with partial evidence earns partial credit" {
-  assert_eq(score_accusation(1, 1, 0, 1), 70)
+  assert_eq(score_accusation(1, 5), 70)
+  assert_eq(score_accusation(1, 1), 40)
+  assert_eq(score_accusation(1, 0), 15)
 }
 
 ///|
 test "a wrong suspect cannot win even with every clue" {
-  assert_eq(score_accusation(2, 1, 1, 1), 0)
+  assert_eq(score_accusation(2, 7), 0)
 }
 
 ///|
 test "at least two clues are required before an accusation" {
-  assert_eq(can_accuse(1, 0, 0, 1), 0)
-  assert_eq(can_accuse(1, 0, 1, 0), 0)
-  assert_eq(can_accuse(1, 0, 1, 1), 1)
+  assert_eq(can_accuse(1, 1), 0)
+  assert_eq(can_accuse(3, 0), 0)
+  assert_eq(can_accuse(3, 1), 1)
+}
+
+///|
+test "the evidence state machine is repeatable and tracks progress" {
+  let first = collect_evidence(0, 0)
+  assert_eq(first, 1)
+  assert_eq(collect_evidence(first, 0), 1)
+  let second = collect_evidence(first, 1)
+  assert_eq(second, 3)
+  let all = collect_evidence(second, 2)
+  assert_eq(all, 7)
+  assert_eq(evidence_count(all), 3)
+  assert_eq(progress_percent(0), 0)
+  assert_eq(progress_percent(first), 33)
+  assert_eq(progress_percent(second), 67)
+  assert_eq(progress_percent(all), 100)
 }
 
 ///|

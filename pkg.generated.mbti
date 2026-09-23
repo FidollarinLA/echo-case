@@ -2,7 +2,7 @@
 package "fidollarinla/echo_case"
 
 // Values
-pub fn can_accuse(Int, Int, Int, Int) -> Int
+pub fn can_accuse(Int, Int) -> Int
 
 pub fn case_solution() -> String
 
@@ -14,7 +14,15 @@ pub fn clue_short(Int) -> String
 
 pub fn clue_title(Int) -> String
 
-pub fn score_accusation(Int, Int, Int, Int) -> Int
+pub fn collect_evidence(Int, Int) -> Int
+
+pub fn evidence_count(Int) -> Int
+
+pub fn has_evidence(Int, Int) -> Int
+
+pub fn progress_percent(Int) -> Int
+
+pub fn score_accusation(Int, Int) -> Int
 
 pub fn scripted_reply(String, String, Int, Int, Int) -> String
 

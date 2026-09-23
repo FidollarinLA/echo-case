@@ -1,24 +1,63 @@
 ///|
-/// Score a player's accusation using the case's fixed evidence rules.
-/// The model may narrate or advise, but it never decides whether an accusation
-/// is correct. `suspect_id` is 0 for Shen Yao, 1 for Lin Lan, and 2 for Zhou Yu. Each evidence
-/// argument is 1 when the player has found it and 0 otherwise.
+/// Whether a clue bit has been recorded in the case state.
+#export_name("has_evidence")
+pub fn has_evidence(mask : Int, clue_id : Int) -> Int {
+  match clue_id {
+    0 => if mask == 1 || mask == 3 || mask == 5 || mask == 7 { 1 } else { 0 }
+    1 => if mask == 2 || mask == 3 || mask == 6 || mask == 7 { 1 } else { 0 }
+    2 => if mask >= 4 && mask <= 7 { 1 } else { 0 }
+    _ => 0
+  }
+}
+
+///|
+/// Add a clue to the investigation state. Replaying a clue is idempotent.
+#export_name("collect_evidence")
+pub fn collect_evidence(mask : Int, clue_id : Int) -> Int {
+  if has_evidence(mask, clue_id) == 1 {
+    mask
+  } else {
+    match clue_id {
+      0 => mask + 1
+      1 => mask + 2
+      2 => mask + 4
+      _ => mask
+    }
+  }
+}
+
+///|
+#export_name("evidence_count")
+pub fn evidence_count(mask : Int) -> Int {
+  has_evidence(mask, 0) + has_evidence(mask, 1) + has_evidence(mask, 2)
+}
+
+///|
+#export_name("progress_percent")
+pub fn progress_percent(mask : Int) -> Int {
+  let count = evidence_count(mask)
+  if count == 0 {
+    0
+  } else {
+    (count * 100 + 1) / 3
+  }
+}
+
+///|
+/// Score an accusation using the evidence cited by the player. The model may
+/// narrate or advise, but it never decides whether an accusation is correct.
+/// Suspect IDs: 0 Shen Yao, 1 Lin Lan, 2 Zhou Yu.
 #export_name("score_accusation")
-pub fn score_accusation(
-  suspect_id : Int,
-  audio_found : Int,
-  image_found : Int,
-  log_found : Int,
-) -> Int {
+pub fn score_accusation(suspect_id : Int, cited_mask : Int) -> Int {
   if suspect_id != 1 {
     0
   } else {
-    let evidence_count = audio_found + image_found + log_found
-    if evidence_count == 3 {
+    let count = evidence_count(cited_mask)
+    if count == 3 {
       100
-    } else if evidence_count == 2 {
+    } else if count == 2 {
       70
-    } else if evidence_count == 1 {
+    } else if count == 1 {
       40
     } else {
       15
@@ -30,13 +69,8 @@ pub fn score_accusation(
 /// Return whether the player has collected enough evidence to make an
 /// evidence-backed accusation. This stays deterministic across AI providers.
 #export_name("can_accuse")
-pub fn can_accuse(
-  audio_found : Int,
-  image_found : Int,
-  log_found : Int,
-  conversations : Int,
-) -> Int {
-  if audio_found + image_found + log_found >= 2 && conversations > 0 {
+pub fn can_accuse(evidence_mask : Int, conversations : Int) -> Int {
+  if evidence_count(evidence_mask) >= 2 && conversations > 0 {
     1
   } else {
     0

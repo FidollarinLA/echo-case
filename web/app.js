@@ -2,9 +2,13 @@ import {
   can_accuse,
   case_solution,
   case_summary,
+  collect_evidence,
   clue_detail,
   clue_short,
   clue_title,
+  evidence_count,
+  has_evidence,
+  progress_percent,
   score_accusation,
   suspect_intro,
   suspect_mark,
@@ -31,7 +35,7 @@ const clues = [
 }));
 
 const state = {
-  found: new Set(),
+  evidenceMask: 0,
   peopleAsked: new Set(),
   selectedPerson: 0,
   attachedImage: null,
@@ -46,6 +50,11 @@ const evidenceDialog = $("#evidence-dialog");
 const accuseDialog = $("#accusation-dialog");
 const resultDialog = $("#result-dialog");
 
+function isFound(clueId) {
+  const clue = clues.find((item) => item.id === clueId);
+  return clue !== undefined && has_evidence(state.evidenceMask, clue.moonbitId) === 1;
+}
+
 function renderPeople() {
   $("#case-summary").textContent = case_summary();
   $("#suspect-list").innerHTML = people.map((person) => `
@@ -59,21 +68,22 @@ function renderPeople() {
 }
 
 function updateProgress() {
-  const total = state.found.size;
+  const total = evidence_count(state.evidenceMask);
+  const percent = progress_percent(state.evidenceMask);
   $("#evidence-count").textContent = `${total} / 3`;
-  $("#progress-label").textContent = `${Math.round(total / 3 * 100)}%`;
-  $("#progress-bar").style.width = `${total / 3 * 100}%`;
+  $("#progress-label").textContent = `${percent}%`;
+  $("#progress-bar").style.width = `${percent}%`;
   $("#progress-detail").textContent = total === 0 ? "现场尚未检查" : total === 3 ? "三条线索全部归档" : `已归档 ${total} 条线索`;
   for (const clue of clues) {
     const card = $(`#evidence-${clue.id}`);
-    const found = state.found.has(clue.id);
+    const found = isFound(clue.id);
     card.classList.toggle("found", found);
     card.querySelector(".evidence-status").textContent = found ? "已记录 ✓" : "未检查";
   }
-  const ready = can_accuse(+state.found.has("audio"), +state.found.has("image"), +state.found.has("log"), state.peopleAsked.size) === 1;
+  const ready = can_accuse(state.evidenceMask, state.peopleAsked.size) === 1;
   $("#accuse-button").disabled = !ready;
   $("#accuse-hint").textContent = ready ? "关键线索已就绪，可以提交你的推理" : total < 2 ? `再检查 ${2 - total} 条线索后即可提交` : "先与至少一位夜班人员交谈，再提交推理";
-  $$("#cite-list input").forEach((input) => { input.disabled = !state.found.has(input.value); });
+  $$("#cite-list input").forEach((input) => { input.disabled = !isFound(input.value); });
   updateAccusationState();
 }
 
@@ -97,8 +107,8 @@ function openClue(id) {
   } else {
     content.innerHTML = `<div class="transcript">21:07:14　ROUTE / NORTH-03　MAIN → MAINTENANCE<br />21:08:02　CHECKSUM / PASS　SOURCE ARCHIVE: INTACT<br />OPERATOR TOKEN / LL-07</div><p>${clue.detail}</p>`;
   }
-  $("#mark-evidence").textContent = state.found.has(id) ? "线索已归档 ✓" : id === "audio" ? "先试听，再记录" : "记录线索　✓";
-  $("#mark-evidence").disabled = state.found.has(id);
+  $("#mark-evidence").textContent = isFound(id) ? "线索已归档 ✓" : id === "audio" ? "先试听，再记录" : "记录线索　✓";
+  $("#mark-evidence").disabled = isFound(id);
   $("#mark-evidence").dataset.listened = "false";
   evidenceDialog.showModal();
 }
@@ -160,7 +170,7 @@ async function sendQuestion(question) {
   appendMessage("user", question.trim());
   const person = people.find((item) => item.id === state.selectedPerson);
   state.peopleAsked.add(person.id);
-  const evidence = clues.filter((clue) => state.found.has(clue.id)).map((clue) => clue.short);
+  const evidence = clues.filter((clue) => isFound(clue.id)).map((clue) => clue.short);
   const footnote = $("#chat-footnote");
   footnote.textContent = "对方正在整理自己的说法…";
   $("#chat-input").disabled = true;
@@ -207,7 +217,7 @@ function updateAccusationState() {
 
 function openAccusation() {
   $("#cite-list").innerHTML = clues.map((clue) => `
-    <label class="cite-item"><input type="checkbox" value="${clue.id}" ${state.found.has(clue.id) ? "" : "disabled"} /><span>${clue.title}</span></label>`).join("");
+    <label class="cite-item"><input type="checkbox" value="${clue.id}" ${isFound(clue.id) ? "" : "disabled"} /><span>${clue.title}</span></label>`).join("");
   updateAccusationState();
   accuseDialog.showModal();
 }
@@ -219,12 +229,11 @@ function closeDialogs() {
 function submitAccusation() {
   const personId = Number($("input[name='culprit']:checked")?.value ?? -1);
   const citedIds = $$("#cite-list input:checked").map((input) => input.value);
-  const score = score_accusation(
-    personId,
-    +citedIds.includes("audio"),
-    +citedIds.includes("image"),
-    +citedIds.includes("log"),
-  );
+  const citedMask = citedIds.reduce((mask, id) => {
+    const clue = clues.find((item) => item.id === id);
+    return clue ? collect_evidence(mask, clue.moonbitId) : mask;
+  }, 0);
+  const score = score_accusation(personId, citedMask);
   const correct = personId === 1;
   $("#result-title").textContent = correct ? "信号找回了。" : "这条推理还差一点。";
   $("#result-copy").textContent = correct
@@ -239,7 +248,7 @@ function submitAccusation() {
 
 function resetGame() {
   closeDialogs();
-  state.found.clear();
+  state.evidenceMask = 0;
   state.peopleAsked.clear();
   state.selectedPerson = 0;
   state.attachedImage = null;
@@ -260,12 +269,12 @@ document.addEventListener("click", (event) => {
   if (closeButton) closeButton.closest("dialog").close();
 });
 $("#mark-evidence").addEventListener("click", () => {
-  if (!state.activeClue || state.found.has(state.activeClue.id)) return;
+  if (!state.activeClue || isFound(state.activeClue.id)) return;
   if (state.activeClue.id === "audio" && $("#mark-evidence").dataset.listened !== "true") {
     $("#audio-transcript").textContent = "请先播放录音，再把听到的线索记入档案。";
     return;
   }
-  state.found.add(state.activeClue.id);
+  state.evidenceMask = collect_evidence(state.evidenceMask, state.activeClue.moonbitId);
   evidenceDialog.close();
   updateProgress();
 });
